@@ -3,6 +3,7 @@ package net.minegeek360.ai;
 import net.minegeek360.ai.emotion.Emotion;
 import net.minegeek360.ai.interaction.Input;
 import net.minegeek360.ai.interaction.Output;
+import net.minegeek360.ai.language.LanguageInterpreter;
 
 public class GeneticAI {
 	
@@ -13,8 +14,10 @@ public class GeneticAI {
 		Output.aiSay("Hello there!");
 		Output.aiSay("I am a chat bot that learns from the users!");
 		Output.aiSay("My name is "+name);
-		Output.aiSay("Type something in...");
-		Output.aiSay(Input.getInputText());
+		while(true){
+			Output.aiSay("Type something in...");
+			LanguageInterpreter.interperate(Input.getInputText());
+		}
 	}
 	
 	public static void main(String[] args){
@@ -27,10 +30,10 @@ public class GeneticAI {
 			for(int i = 0; i < settings.length; i++){
 				if(settings[i] != null){
 					if(settings[i].equals("-p")){
-						this.kindness = Integer.parseInt(settings[i+1]);
+						this.overallKindness = Integer.parseInt(settings[i+1]);
 					}
 					if(settings[i].equals("-name")){
-						setName(settings[i+1]);
+						setName(settings[i+1].replaceAll("_", " "));
 					}
 				}
 			}
@@ -39,7 +42,7 @@ public class GeneticAI {
 	
 //----------------------------------------AI STARTS HERE-----------------------------------------------------------------
 	
-	public int kindness = 5; //scale 1-10; 0 - unrealistically abusive, 10 - unrealistically kind
+	public int overallKindness = 5; //scale 1-10; 0 - unrealistically abusive, 10 - unrealistically kind
 	private Emotion currentEmotion;
 	private String name = "Gaiben";
 	
