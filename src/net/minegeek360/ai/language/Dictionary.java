@@ -1,15 +1,40 @@
 package net.minegeek360.ai.language;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class Dictionary {
 	
-	/*public static String removePunc(String string){
-		String[] temp = {",",".","!","/","\\","/",";",":","'","#",""};
-		for(int i = 0; i < temp.length; i++){
-			string = string.replaceAll(temp[i], "");
+	private static Map<String,String> knownWords = new HashMap<String, String>();
+	
+	public final static String[] presetGreetings = {"hello","hi","greetings","hey","howdy","greetings","Hiya"};
+	
+	public static void addWord(String string, String catagory){
+		if(!knownWords.containsKey(string)){
+			knownWords.put(string, catagory);
 		}
-		return string;
-	}*/
+	}
+	
+	public static Object[] getWordMapAsArray(){
+		return knownWords.keySet().toArray();
+	}
+	
+	public static Object[] getWordMeaningMapAsArray(){
+		Object[] temp = knownWords.entrySet().toArray();
+		for(int i = 0; i < temp.length; i++){
+			temp[i] = temp[i].toString().split("=")[1];
+		}
+		return temp;
+	}
+	
+	public static Map<String,String> getKnownWords(){
+		return knownWords;
+	}
+	
+	public static String getWordType(String string){
+		return knownWords.get(string);
+	}
 	
 	public static String removePunc(String string){
 		string = string.toLowerCase();
@@ -17,7 +42,7 @@ public class Dictionary {
 		return string;
 	}
 	
-	public static int wordSeverity(String string){//scale 1-10; 0 - unrealistically abusive, 10 - unrealistically kind, 5 - neutral
+	/*public static int wordSeverity(String string){//scale 1-10; 0 - unrealistically abusive, 10 - unrealistically kind, 5 - neutral
 		switch(removePunc(string)){
 		case "stupid": return 4;
 		case "awesome": return 6;
@@ -31,6 +56,6 @@ public class Dictionary {
 		case "beautiful": return 7;
 		}
 		return 5;
-	}
+	}*/
 	
 }

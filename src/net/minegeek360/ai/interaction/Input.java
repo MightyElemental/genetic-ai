@@ -1,23 +1,18 @@
 package net.minegeek360.ai.interaction;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Input implements ActionListener{
+public class Input{
 	
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		
-	}
+	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	
 	public static String getInputText(){
+		System.out.print("User> ");
 		try {
-			return br.readLine();
+			String temp = br.readLine();
+			return temp;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
