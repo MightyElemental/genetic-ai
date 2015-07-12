@@ -12,6 +12,11 @@ public class LanguageInterpreter {
 		ArrayList<String> temp2 = Dictionary.getAllWordsWithTag(Word.GREETING);
 		Output.aiSay((String) temp2.get(rand.nextInt(temp2.size())));
 	}
+	
+	private static boolean chance(int percentage){
+		int temp = rand.nextInt(99);
+		return temp < percentage;
+	}
 
 	private static void answerQuestion(String sent) {
 		if(checkNames(sent)){ return; }
@@ -24,17 +29,15 @@ public class LanguageInterpreter {
 	
 	private static boolean explainQuestion(String sent){
 		String[] temp = sent.split(" ");
-		if(Dictionary.getWordTags(temp[0]).containsKey(Word.EXPLAIN_QUESTION)){
-			if(temp.length > 1){
-				if(temp[1].equals("not")){
-					Output.aiSay("because i am unsure about anything and everything!");
-					return true;
-				}
+		if(Dictionary.getWordTags(temp[0]).containsKey(Word.EXPLAIN_QUESTION) || Sentence.whatSentenceTypeIsThis(sent).equals(Word.EXPLAIN_QUESTION)){
+			if(temp.length > 1 && temp[1].equals("not")){
+				//Output.aiSay("because i am unsure about anything and everything");
+				Output.aiSay("because reasons");
+				return true;
 			}else{
-				Output.aiSay("because i know everything!");
+				Output.aiSay("because reasons");
 				return true;
 			}
-			return true;
 		}
 		return false;
 	}
@@ -43,12 +46,13 @@ public class LanguageInterpreter {
 	
 	private static boolean yesNoQuestion(String sent){
 		String[] temp = {"yes", "no"};
-		if(Dictionary.getWordTags(sent.split(" ")[0]).containsKey(Word.YES_NO_QUESTION)){
-			int temp2 = rand.nextInt(100);
-			if(temp2 < positivePercentage){
-				Output.aiSay(temp[0]+" | "+temp2+"%");
+		if(Dictionary.getWordTags(sent.split(" ")[0]).containsKey(Word.YES_NO_QUESTION) || Sentence.whatSentenceTypeIsThis(sent).equals(Word.YES_NO_QUESTION)){
+			if(chance(positivePercentage)){
+				//Output.aiSay(temp[0]+" | "+temp2+"%");
+				Output.aiSay(temp[0]);
 			}else{
-				Output.aiSay(temp[1]+" | "+temp2+"%");
+				//Output.aiSay(temp[1]+" | "+temp2+"%");
+				Output.aiSay(temp[1]);
 			}
 			return true;
 		}
@@ -72,12 +76,20 @@ public class LanguageInterpreter {
 	}
 
 	public static void respond(String lastSaid, String sentType) {
-		if (sentType.equals("GREETING")) {
+		if (sentType.equals(Word.GREETING)) {
 			greet();
 			GeneticAI.setConfused(false);
-		} else if (sentType.equals("QUESTION")) {
+		} else if (sentType.contains(Word.QUESTION)) {
 			GeneticAI.setConfused(false);
 			answerQuestion(lastSaid);
+		} else if (lastSaid.startsWith("say")) {
+			if(chance(60)){
+				Output.aiSay(lastSaid.replaceFirst("say ", ""));
+			}else if(chance(40)){
+				Output.aiSay("why");
+			}else{
+				Output.aiSay("no");
+			}
 		} else {
 			GeneticAI.setConfused(true);
 		}

@@ -2,6 +2,7 @@ package net.minegeek360.ai;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -45,7 +46,7 @@ public class AIFrame {
 	}
 
 	public static void setup() {
-		frame.setTitle(GeneticAI.getName() + ". A Genetic AI");
+		frame.setTitle(GeneticAI.getName() + ", a learning chat bot");
 		frame.setSize(640, 480);
 		frame.setVisible(true);
 		frame.setResizable(false);

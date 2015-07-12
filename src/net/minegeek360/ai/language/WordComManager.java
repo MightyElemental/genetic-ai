@@ -16,11 +16,24 @@ public class WordComManager {
 		return "UNKNOWN";
 	}
 	
+	public static String getRule(String[] string) {
+		if (wordCombinations.containsKey(Arrays.asList(string))) {
+			return (String) wordCombinations.get(Arrays.asList(string));
+		}
+		return "UNKNOWN";
+	}
+	
 	/*
 	 * MAKE THIS SYSTEM UNDERSTAND UNDER WHAT CIRCUMSTANCES IT IS TO
 	 * INTERPERATE THESE WORDS AS THE END RESULT
 	 * E.G. "what" - at beginning COMBINED WITH "your" + "name" ANYWHERE AFTER = QUESTION
 	 */
+	
+	public static void createRule(String[] string, String rule) {
+		if (!wordCombinations.containsKey(Arrays.asList(string))) {
+			wordCombinations.put(Arrays.asList(string), rule);
+		}
+	}
 
 	public static void createRule(String w1, String w2, String rule) {
 		if (!wordCombinations.containsKey(Arrays.asList(new String[] { w1, w2 }))) {

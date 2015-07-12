@@ -16,7 +16,6 @@ public class Dictionary {
 	
 
 	public static void addWord(Word word) {
-		System.out.println();
 		for (int i = 0; i < knownWords.length; i++) {
 			if (knownWords[i] != null) {
 				if (!knownWords[i].toString().equals(word.toString())) {

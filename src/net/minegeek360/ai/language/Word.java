@@ -25,7 +25,7 @@ public class Word {
 	}
 
 	public Word addTag(String tag, String surety) {
-		System.out.println(word+" "+tag+" "+surety);
+		//System.out.println(this.getClass() + " " + word + " " + tag + " " + surety);
 		if (!this.tags.containsKey(tag)) {
 			this.tags.put(tag, surety);
 		}

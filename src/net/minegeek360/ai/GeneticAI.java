@@ -11,7 +11,9 @@ import net.minegeek360.ai.language.WordComManager;
 public class GeneticAI {
 	public static String[] settings;
 	public static boolean hasGUI = true;
+	public static boolean useVoice = true;
 	public static Input input = new Input();
+	public static Voice voice;
 	
 	private void setupDictionary(){
 		for (int i = 0; i < Dictionary.presetGreetings.length; i++) {
@@ -30,19 +32,26 @@ public class GeneticAI {
 			Dictionary.addWord(new Word(Dictionary.presetNames[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE).addTag(Word.NAME, Word.DEFINATE));
 		}
 		Dictionary.getWord("why").addTag(Word.EXPLAIN_QUESTION, Word.DEFINATE);
+		WordComManager.createRule(new String[]{"how", "do","you","know"}, Word.EXPLAIN_QUESTION);
 		WordComManager.createRule("may", "i", Word.QUESTION);
+		WordComManager.createRule("am", "i", Word.YES_NO_QUESTION);
+		WordComManager.createRule("will", "i", Word.YES_NO_QUESTION);
+		WordComManager.createRule("will", "you", Word.YES_NO_QUESTION);
 	}
 
 	public GeneticAI() {
 		handleSettings();
+		if(useVoice){
+			voice = new Voice();
+		}
 		if (hasGUI) {
 			AIFrame.setup();
 		}
 		setupDictionary();
 
-		Output.consoleSay("Hello there!");
+		//Output.consoleSay("Hello there!");
 		Output.consoleSay("You are about to talk to a chat bot that learns from the users!");
-		Output.consoleSay("It has been named '" + name + "' by its master user");
+		//Output.consoleSay("It has been named '" + name + "' by its master user");
 		Output.consoleSay("Type something in and It will try to respond correctly...");
 		Output.newLine();
 		while (true) {
@@ -73,12 +82,19 @@ public class GeneticAI {
 					if (settings[i].equals("-confuse")) {
 						canBeConfused = Boolean.parseBoolean(settings[(i + 1)]);
 					}
-					if (settings[i].equals("-gui")) {
-						hasGUI = Boolean.parseBoolean(settings[(i + 1)]);
+					if (settings[i].equals("-nogui")) {
+						hasGUI = false;
+					}
+					if (settings[i].equals("-novoice")) {
+						useVoice = false;
 					}
 				}
 			}
 		} catch (Exception e) {}
+		if(useVoice && !System.getProperty("os.name").toLowerCase().contains("win")){
+			Output.consoleSay("Sorry, but only Windows users can use voice");
+			useVoice = false;
+		}
 	}
 
 	public int overallKindness = 5;

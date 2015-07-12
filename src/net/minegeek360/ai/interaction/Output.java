@@ -14,8 +14,7 @@ public class Output {
 	public static void aiSay(String message) {
 		lastSaid = message;
 		lastSaidTime = System.currentTimeMillis() / 1000L;
-		message = processSentToAppeal(message,
-				Sentence.whatSentenceTypeIsThis(message));
+		message = processSentToAppeal(message, Sentence.whatSentenceTypeIsThis(message));
 		if (!GeneticAI.hasGUI) {
 			String[] temp = message.split("");
 			System.out.print(GeneticAI.getName() + "> ");
@@ -31,6 +30,9 @@ public class Output {
 		} else {
 			System.out.println(GeneticAI.getName() + "> " + message);
 			AIFrame.addText(GeneticAI.getName() + "> " + message);
+		}
+		if(GeneticAI.useVoice){
+			GeneticAI.voice.say(message);
 		}
 	}
 
@@ -85,7 +87,7 @@ public class Output {
 		sb.deleteCharAt(0);
 		sb.insert(0, temp);
 		if (sentType != null) {
-			if (sentType.equals("QUESTION")) {
+			if (sentType.contains("QUESTION")) {
 				sb.append("?");
 			} else {
 				sb.append(".");
@@ -105,7 +107,7 @@ public class Output {
 
 	public static void newLine() {
 		System.out.println("");
-		AIFrame.addText("");
+		AIFrame.addText("\n");
 	}
 
 	public static String getLastSaid() {
