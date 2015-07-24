@@ -1,7 +1,5 @@
 # IrcClient, IrcMessage, IrcChannel class sets
 
-to create a new instance of the irc client.
-user
-
+To create a new instance of the Irc Client class;
 `IrcClient client = new IrcClient("JavaIrcGaiben", "passwordzz");`
 `client.joinChannel("#javabotwars");`
