@@ -18,3 +18,4 @@ public class IrcChannel
 		Irc.rawSend("PRIVMSG #" + this.channelName + " :" + message);
 	}
 }
+
