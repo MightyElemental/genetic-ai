@@ -8,13 +8,15 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import net.minegeek360.ai.language.LanguageInterpreter;
+
 public class IrcClient
 {
 
 	private BufferedWriter			writer;
 	private BufferedReader			reader;
 	private String					server		= "irc.freenode.net";
-	private String					pass;
+	private String					pass; 
 	private String					nick;
 	private Socket					socket;
 	private ArrayList<IrcChannel>	channels	= new ArrayList<IrcChannel>();
@@ -43,10 +45,12 @@ public class IrcClient
 			}
 		}
 	};
-
-	public IrcClient(String username, String password)
+	/***
+	 * @param username username/nick for the IrcClient
+	 * @param password password for the IrcClient if required
+	 */
+	public IrcClient(String username)
 	{
-		this.pass = password;
 		this.nick = username;
 
 		try
@@ -61,9 +65,11 @@ public class IrcClient
 				this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 				// Send credentials
-				// rawSend("PASS " + this.pass);
-				rawSend("NICK " + this.nick);
+				if(this.pass != null)
+					rawSend("PASS " + this.pass);
 				rawSend("USER " + this.nick + " 8 * : " + this.nick);
+				rawSend("NICK " + this.nick);
+
 
 				this.reading.start();
 			}
@@ -77,6 +83,12 @@ public class IrcClient
 			e.printStackTrace();
 		}
 	}
+	
+	public IrcClient (String username, String password)
+	{
+		this(username);
+		this.pass = password;
+	}
 
 	public void joinChannel(String channelname)
 	{
@@ -85,6 +97,8 @@ public class IrcClient
 
 	protected void parseData(String line)
 	{
+		LanguageInterpreter.interperate(line);
+		
 		if (line.startsWith("PING"))
 		{
 			rawSend("PONG " + line.split(" ")[1]);
@@ -99,6 +113,7 @@ public class IrcClient
 		{
 			this.writer.write(data + "\r\n");
 			this.writer.flush();
+			System.out.println(data);
 		}
 		catch (IOException e)
 		{
