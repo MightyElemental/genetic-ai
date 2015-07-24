@@ -31,9 +31,6 @@ public class Output {
 			System.out.println(GeneticAI.getName() + "> " + message);
 			AIFrame.addText(GeneticAI.getName() + "> " + message);
 		}
-		if(GeneticAI.useVoice){
-			GeneticAI.voice.say(message);
-		}
 	}
 
 	public static void consoleSay(String message) {

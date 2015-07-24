@@ -11,9 +11,7 @@ import net.minegeek360.ai.language.WordComManager;
 public class GeneticAI {
 	public static String[] settings;
 	public static boolean hasGUI = true;
-	public static boolean useVoice = true;
 	public static Input input = new Input();
-	public static Voice voice;
 	
 	private void setupDictionary(){
 		for (int i = 0; i < Dictionary.presetGreetings.length; i++) {
@@ -41,9 +39,6 @@ public class GeneticAI {
 
 	public GeneticAI() {
 		handleSettings();
-		if(useVoice){
-			voice = new Voice();
-		}
 		if (hasGUI) {
 			AIFrame.setup();
 		}
@@ -85,16 +80,9 @@ public class GeneticAI {
 					if (settings[i].equals("-nogui")) {
 						hasGUI = false;
 					}
-					if (settings[i].equals("-novoice")) {
-						useVoice = false;
-					}
 				}
 			}
 		} catch (Exception e) {}
-		if(useVoice && !System.getProperty("os.name").toLowerCase().contains("win")){
-			Output.consoleSay("Sorry, but only Windows users can use voice");
-			useVoice = false;
-		}
 	}
 
 	public int overallKindness = 5;
