@@ -10,7 +10,7 @@ public class Dictionary {
 	public static final String[] presetGreetings = { "hello", "hi", "greetings", "hey", "howdy", "greetings", "hiya", "ohio", "konichiwa" };
 	public static final String[] presetQuestions = { "what", "where", "who", "when", "why", "how" };
 	public static final String[] presetYesNoQuestions = { "do", "can", "does", "is", "are" };
-	public static final String[] presetPropNouns = { "i", "london", "fairburn", "sherburn", "sydney", "washington" };
+	public static final String[] presetPropNouns = { "i", "london", "fairburn", "sherburn", "sydney", "washington", "amsterdam" };
 	public static final String[] presetNames = { "james", "noe", "evan",
 		"oliver", "reilly", "keean", "aaron", "john", "ahna", "ged", "joe", "fiona", "emma" };
 	
