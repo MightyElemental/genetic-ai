@@ -6,17 +6,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class IrcClient
 {
 
-	private BufferedWriter	writer;
-	private BufferedReader	reader;
-	private String			server	= "irc.freenode.net";
-	private String			pass;
-	private String			nick;
-	private Socket			socket;
-	private IrcChannel[]	channels;
+	private BufferedWriter			writer;
+	private BufferedReader			reader;
+	private String					server		= "irc.freenode.net";
+	private String					pass;
+	private String					nick;
+	private Socket					socket;
+	private ArrayList<IrcChannel>	channels	= new ArrayList<IrcChannel>();
 
 	/*
 	 * Thread to read from the server.
@@ -31,14 +32,13 @@ public class IrcClient
 				try
 				{
 					line = reader.readLine();
-					
+
 					parseData(line);
 				}
 				catch (IOException e)
 				{
 					e.printStackTrace();
 				}
-
 
 			}
 		}
@@ -78,13 +78,18 @@ public class IrcClient
 		}
 	}
 
+	public void joinChannel(String channelname)
+	{
+		this.channels.add(new IrcChannel(channelname, this));
+	}
+
 	protected void parseData(String line)
 	{
 		if (line.startsWith("PING"))
 		{
 			rawSend("PONG " + line.split(" ")[1]);
 		}
-		
+
 		System.out.println(line);
 	}
 
