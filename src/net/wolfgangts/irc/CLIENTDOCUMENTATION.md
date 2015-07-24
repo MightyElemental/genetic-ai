@@ -2,6 +2,6 @@
 
 To create a new instance of the Irc Client class;
 
-`IrcClient client = new IrcClient("JavaIrcGaiben", "passwordzz");`
+`IrcClient client = new IrcClient("JavaIrcGaiben");`
 
 `client.joinChannel("#javabotwars");`
