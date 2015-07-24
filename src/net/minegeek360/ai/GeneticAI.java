@@ -12,8 +12,8 @@ public class GeneticAI {
 	public static String[] settings;
 	public static boolean hasGUI = true;
 	public static Input input = new Input();
-	
-	private void setupDictionary(){
+
+	private void setupDictionary() {
 		for (int i = 0; i < Dictionary.presetGreetings.length; i++) {
 			Dictionary.addWord(new Word(Dictionary.presetGreetings[i]).addTag(Word.GREETING, Word.DEFINATE));
 		}
@@ -21,16 +21,18 @@ public class GeneticAI {
 			Dictionary.addWord(new Word(Dictionary.presetQuestions[i]).addTag(Word.QUESTION, Word.DEFINATE));
 		}
 		for (int i = 0; i < Dictionary.presetYesNoQuestions.length; i++) {
-			Dictionary.addWord(new Word(Dictionary.presetYesNoQuestions[i]).addTag(Word.QUESTION, Word.DEFINATE).addTag(Word.YES_NO_QUESTION, Word.DEFINATE));
+			Dictionary.addWord(new Word(Dictionary.presetYesNoQuestions[i]).addTag(Word.QUESTION, Word.DEFINATE)
+					.addTag(Word.YES_NO_QUESTION, Word.DEFINATE));
 		}
 		for (int i = 0; i < Dictionary.presetPropNouns.length; i++) {
 			Dictionary.addWord(new Word(Dictionary.presetPropNouns[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE));
 		}
 		for (int i = 0; i < Dictionary.presetNames.length; i++) {
-			Dictionary.addWord(new Word(Dictionary.presetNames[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE).addTag(Word.NAME, Word.DEFINATE));
+			Dictionary
+					.addWord(new Word(Dictionary.presetNames[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE).addTag(Word.NAME, Word.DEFINATE));
 		}
 		Dictionary.getWord("why").addTag(Word.EXPLAIN_QUESTION, Word.DEFINATE);
-		WordComManager.createRule(new String[]{"how", "do","you","know"}, Word.EXPLAIN_QUESTION);
+		WordComManager.createRule(new String[] { "how", "do", "you", "know" }, Word.EXPLAIN_QUESTION);
 		WordComManager.createRule("may", "i", Word.QUESTION);
 		WordComManager.createRule("am", "i", Word.YES_NO_QUESTION);
 		WordComManager.createRule("will", "i", Word.YES_NO_QUESTION);
@@ -44,9 +46,9 @@ public class GeneticAI {
 		}
 		setupDictionary();
 
-		//Output.consoleSay("Hello there!");
+		// Output.consoleSay("Hello there!");
 		Output.consoleSay("You are about to talk to a chat bot that learns from the users!");
-		//Output.consoleSay("It has been named '" + name + "' by its master user");
+		// Output.consoleSay("It has been named '" + name + "' by its master user");
 		Output.consoleSay("Type something in and It will try to respond correctly...");
 		Output.newLine();
 		while (true) {
@@ -82,7 +84,8 @@ public class GeneticAI {
 					}
 				}
 			}
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 	}
 
 	public int overallKindness = 5;

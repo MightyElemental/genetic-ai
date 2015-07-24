@@ -8,9 +8,14 @@ import net.minegeek360.ai.interaction.Output;
 public class LanguageInterpreter {
 	private static Random rand = new Random();
 
-	public static void greet() {
+	private static void greet(String sent) {
 		ArrayList<String> temp2 = Dictionary.getAllWordsWithTag(Word.GREETING);
-		Output.aiSay((String) temp2.get(rand.nextInt(temp2.size())));
+		if(sent.contains("hello") && chance(80)){
+			Output.aiSay("i'm sorry, 'hello' is currently not applicable to the current conversation");
+			Output.aiSay("please try again later");
+		}else{
+			Output.aiSay((String) temp2.get(rand.nextInt(temp2.size())));
+		}
 	}
 	
 	private static boolean chance(int percentage){
@@ -77,7 +82,7 @@ public class LanguageInterpreter {
 
 	public static void respond(String lastSaid, String sentType) {
 		if (sentType.equals(Word.GREETING)) {
-			greet();
+			greet(lastSaid);
 			GeneticAI.setConfused(false);
 		} else if (sentType.contains(Word.QUESTION)) {
 			GeneticAI.setConfused(false);
