@@ -7,7 +7,7 @@ import java.util.Map;
 public class Dictionary {
 	private static Word[] knownWords = new Word[99999];
 	private static Map<String, Integer> knownWordsKey = new HashMap<String, Integer>();
-	public static final String[] presetGreetings = { "hello", "hi", "greetings", "hey", "howdy", "greetings", "hiya" };
+	public static final String[] presetGreetings = { "hello", "hi", "greetings", "hey", "howdy", "greetings", "hiya", "ohio", "konichiwa" };
 	public static final String[] presetQuestions = { "what", "where", "who", "when", "why", "how" };
 	public static final String[] presetYesNoQuestions = { "do", "can", "does", "is", "are" };
 	public static final String[] presetPropNouns = { "i", "london", "fairburn", "sherburn", "sydney", "washington" };
