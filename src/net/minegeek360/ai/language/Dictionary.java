@@ -5,14 +5,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Dictionary {
-	private static Word[] knownWords = new Word[99999];
-	private static Map<String, Integer> knownWordsKey = new HashMap<String, Integer>();
-	public static final String[] presetGreetings = { "hello", "hi", "greetings", "hey", "howdy", "greetings", "hiya", "ohio", "konichiwa" };
-	public static final String[] presetQuestions = { "what", "where", "who", "when", "why", "how" };
-	public static final String[] presetYesNoQuestions = { "do", "can", "does", "is", "are" };
-	public static final String[] presetPropNouns = { "i", "london", "fairburn", "sherburn", "sydney", "washington", "amsterdam" };
-	public static final String[] presetNames = { "james", "noe", "evan", "oliver", "reilly", "keean", "aaron", "john", "ahna", "ged", "joe",
-			"fiona", "emma" };
+
+	private static Word[]				knownWords				= new Word[99999];
+	private static Map<String, Integer>	knownWordsKey			= new HashMap<String, Integer>();
+	public static final String[]		presetGreetings			= { "hello", "hi", "greetings", "hey", "howdy", "greetings", "hiya", "ohio",
+			"konichiwa" };
+	public static final String[]		presetQuestions			= { "what", "where", "who", "when", "why", "how" };
+	public static final String[]		presetYesNoQuestions	= { "do", "can", "does", "is", "are" };
+	public static final String[]		presetPropNouns			= { "i", "london", "fairburn", "sherburn", "sydney", "washington",
+			"amsterdam" };
+	public static final String[]		presetNames				= { "james", "noe", "evan", "oliver", "reilly", "keean", "aaron", "john",
+			"ahna", "ged", "joe", "fiona", "emma" };
 
 	/** Adds a word to the word bank
 	 * 
@@ -31,10 +34,14 @@ public class Dictionary {
 		}
 	}
 
+	/** Gets all of the words known to the bot
+	 * 
+	 * @return Word[] is the list of words known to the bot */
 	public static Word[] getKnownWords() {
 		return knownWords;
 	}
 
+	/** Gets the Word object from the given string */
 	public static Word getWord(String string) {
 		if (knownWordsKey.containsKey(string)) { return knownWords[knownWordsKey.get(string)]; }
 		return null;
