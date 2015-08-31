@@ -11,13 +11,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class AIFrame {
-	private static String areaText = "";
-	public static JFrame frame = new JFrame();
-	public static JPanel panel1 = new JPanel();
-	public static JTextArea textArea = new JTextArea();
-	public static JTextField input = new JTextField();
-	public static JButton button = new JButton("Submit");
-	public static JScrollPane scrolling = new JScrollPane();
+
+	private static String		areaText	= "";
+	public static JFrame		frame		= new JFrame();
+	public static JPanel		panel1		= new JPanel();
+	public static JTextArea		textArea	= new JTextArea();
+	public static JTextField	input		= new JTextField();
+	public static JButton		button		= new JButton("Submit");
+	public static JScrollPane	scrolling	= new JScrollPane();
 
 	public static void addText(String message) {
 		String[] temp = message.split("");
@@ -60,7 +61,7 @@ public class AIFrame {
 		scrolling.setHorizontalScrollBarPolicy(31);
 		scrolling.setVerticalScrollBarPolicy(22);
 		scrolling.setViewportView(textArea);
-		frame.add(scrolling, "North");
+		frame.add(scrolling, BorderLayout.NORTH);
 
 		input.setPreferredSize(new Dimension(555, 40));
 		input.addKeyListener(GeneticAI.input);
