@@ -5,15 +5,18 @@ import java.util.Map;
 import net.minegeek360.ai.AIFrame;
 import net.minegeek360.ai.GeneticAI;
 import net.minegeek360.ai.language.Dictionary;
+import net.minegeek360.ai.language.LanguageInterpreter;
 import net.minegeek360.ai.language.Sentence;
 
 public class Output {
-	private static String lastSaid = "";
-	private static long lastSaidTime;
+
+	private static String	lastSaid	= "";
+	private static long		lastSaidTime;
 
 	public static void aiSay(String message) {
 		lastSaid = message;
 		lastSaidTime = System.currentTimeMillis() / 1000L;
+		LanguageInterpreter.conversationList.add(message);
 		message = processSentToAppeal(message, Sentence.whatSentenceTypeIsThis(message));
 		if (!GeneticAI.hasGUI) {
 			String[] temp = message.split("");
@@ -58,13 +61,10 @@ public class Output {
 		String temp3 = "";
 		try {
 			for (int i = 0; i < splitSent.length; i++) {
-				Map<String, String> temp4 = Dictionary.getWordTags(splitSent[i]
-						.replaceAll(" ", ""));
+				Map<String, String> temp4 = Dictionary.getWordTags(splitSent[i].replaceAll(" ", ""));
 				if ((temp4 != null) && (temp4.containsKey("PROP-NOUN"))) {
 					StringBuilder sb2 = new StringBuilder(splitSent[i]);
-					splitSent[i] = (new StringBuilder(String.valueOf(sb2
-							.charAt(0))).toString().toUpperCase() + sb2
-							.deleteCharAt(0));
+					splitSent[i] = (new StringBuilder(String.valueOf(sb2.charAt(0))).toString().toUpperCase() + sb2.deleteCharAt(0));
 				}
 			}
 			for (int i = 0; i < splitSent.length; i++) {
@@ -95,8 +95,7 @@ public class Output {
 
 	public static void userSay(String message) {
 		if (GeneticAI.hasGUI) {
-			message = processSentToAppeal(message,
-					Sentence.whatSentenceTypeIsThis(message));
+			message = processSentToAppeal(message, Sentence.whatSentenceTypeIsThis(message));
 			AIFrame.addText("User> " + message);
 			System.out.println("User> " + message);
 		}

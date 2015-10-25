@@ -9,9 +9,10 @@ import net.minegeek360.ai.language.Word;
 import net.minegeek360.ai.language.WordComManager;
 
 public class GeneticAI {
-	public static String[] settings;
-	public static boolean hasGUI = true;
-	public static Input input = new Input();
+
+	public static String[]	settings;
+	public static boolean	hasGUI	= true;
+	public static Input		input	= new Input();
 
 	private void setupDictionary() {
 		for (int i = 0; i < Dictionary.presetGreetings.length; i++) {
@@ -25,11 +26,18 @@ public class GeneticAI {
 					.addTag(Word.YES_NO_QUESTION, Word.DEFINATE));
 		}
 		for (int i = 0; i < Dictionary.presetPropNouns.length; i++) {
-			Dictionary.addWord(new Word(Dictionary.presetPropNouns[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE));
+			Dictionary.addWord(
+					new Word(Dictionary.presetPropNouns[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE).addTag(Word.NOUN, Word.DEFINATE));
 		}
 		for (int i = 0; i < Dictionary.presetNames.length; i++) {
-			Dictionary
-					.addWord(new Word(Dictionary.presetNames[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE).addTag(Word.NAME, Word.DEFINATE));
+			Dictionary.addWord(new Word(Dictionary.presetNames[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE).addTag(Word.NAME, Word.DEFINATE)
+					.addTag(Word.NOUN, Word.DEFINATE));
+		}
+		for (String tempWord : Dictionary.presetArticles) {
+			Dictionary.addWord(new Word(tempWord).addTag(Word.ARTICLE, Word.DEFINATE));
+		}
+		for (String word : Dictionary.presetResponse) {
+			Dictionary.addWord(new Word(word).addTag(Word.RESPONSE, Word.DEFINATE));
 		}
 		Dictionary.getWord("why").addTag(Word.EXPLAIN_QUESTION, Word.DEFINATE);
 		WordComManager.createRule(new String[] { "how", "do", "you", "know" }, Word.EXPLAIN_QUESTION);
@@ -88,11 +96,11 @@ public class GeneticAI {
 		}
 	}
 
-	public int overallKindness = 5;
-	private Emotion currentEmotion;
-	private static String name = "Gaiben";
-	private static boolean isConfused = false;
-	private static boolean canBeConfused = true;
+	public int				overallKindness	= 5;
+	private Emotion			currentEmotion;
+	private static String	name			= "Gaiben";
+	private static boolean	isConfused		= false;
+	private static boolean	canBeConfused	= true;
 
 	public static void setName(String newName) {
 		name = newName;
