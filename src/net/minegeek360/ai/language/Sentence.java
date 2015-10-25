@@ -50,6 +50,9 @@ public class Sentence {
 			if (Dictionary.getWordTags(temp[i]) != null) {
 				if (Dictionary.getWordTags(temp[i]).containsKey(Word.QUESTION)) { return Word.QUESTION; }
 			}
+			if (i >= 1) {
+				if (WordComManager.getRule(temp[i - 1], temp[i]).equals(Word.QUESTION)) { return Word.QUESTION; }
+			}
 		}
 
 		if (Dictionary.getWordTags(temp[0]) != null && Dictionary.getWordTags(temp[0]).containsKey(Word.RESPONSE)) { return Word.RESPONSE; }
@@ -57,8 +60,10 @@ public class Sentence {
 			String[] ls = Output.getLastSaid().split(" ");
 			for (int i = 0; i < ls.length; i++) {
 				if (Dictionary.getWordTags(ls[i]) != null) {
-					System.out.println(ls[i]);
 					if (Dictionary.getWordTags(ls[i]).containsKey(Word.QUESTION)) { return Word.RESPONSE; }
+				}
+				if (i >= 1) {
+					if (WordComManager.getRule(ls[i - 1], ls[i]).equals(Word.QUESTION)) { return Word.RESPONSE; }
 				}
 			}
 		}
