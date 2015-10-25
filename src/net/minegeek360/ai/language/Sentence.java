@@ -48,7 +48,9 @@ public class Sentence {
 
 		for (int i = 0; i < temp.length; i++) {
 			if (Dictionary.getWordTags(temp[i]) != null) {
-				if (Dictionary.getWordTags(temp[i]).containsKey(Word.QUESTION)
+				if (Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION) && i == 0) {
+					return Word.QUESTION;
+				} else if (Dictionary.getWordTags(temp[i]).containsKey(Word.QUESTION)
 						&& !Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION)) { return Word.QUESTION; }
 			}
 			if (i >= 1) {
@@ -61,7 +63,10 @@ public class Sentence {
 			String[] ls = Output.getLastSaid().split(" ");
 			for (int i = 0; i < ls.length; i++) {
 				if (Dictionary.getWordTags(ls[i]) != null) {
-					if (Dictionary.getWordTags(ls[i]).containsKey(Word.QUESTION)) { return Word.RESPONSE; }
+					if (Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION) && i == 0) {
+						return Word.QUESTION;
+					} else if (Dictionary.getWordTags(ls[i]).containsKey(Word.QUESTION)
+							&& !Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION)) { return Word.RESPONSE; }
 				}
 				if (i >= 1) {
 					if (WordComManager.getRule(ls[i - 1], ls[i]).equals(Word.QUESTION)
