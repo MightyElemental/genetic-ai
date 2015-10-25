@@ -122,13 +122,15 @@ public class LanguageInterpreter {
 			}
 		} else if (conversationList.size() - 1 >= 0 && Sentence.whatSentenceTypeIsThis(lastSaid).equals(Word.RESPONSE)) {
 			GeneticAI.setConfused(false);
-			if (chance(40)) {
+			if (chance(10)) {
 				Output.aiSay("Are you sure you meant to say '" + conversationList.get(conversationList.size() - 1) + "'");
 			} else if (chance(20)) {
 				Output.aiSay("What do you mean '" + conversationList.get(conversationList.size() - 1) + "'");
-			} else {
+			} else if (chance(20)) {
 				Output.aiSay("By saying '" + conversationList.get(conversationList.size() - 1)
 						+ "' do you really mean that you have no clue what I am on about");
+			} else {
+				Output.aiSay("Ok then");
 			}
 		} else {
 			GeneticAI.setConfused(true);

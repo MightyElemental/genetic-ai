@@ -48,7 +48,8 @@ public class Sentence {
 
 		for (int i = 0; i < temp.length; i++) {
 			if (Dictionary.getWordTags(temp[i]) != null) {
-				if (Dictionary.getWordTags(temp[i]).containsKey(Word.QUESTION)) { return Word.QUESTION; }
+				if (Dictionary.getWordTags(temp[i]).containsKey(Word.QUESTION)
+						&& !Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION)) { return Word.QUESTION; }
 			}
 			if (i >= 1) {
 				if (WordComManager.getRule(temp[i - 1], temp[i]).equals(Word.QUESTION)) { return Word.QUESTION; }
@@ -63,7 +64,8 @@ public class Sentence {
 					if (Dictionary.getWordTags(ls[i]).containsKey(Word.QUESTION)) { return Word.RESPONSE; }
 				}
 				if (i >= 1) {
-					if (WordComManager.getRule(ls[i - 1], ls[i]).equals(Word.QUESTION)) { return Word.RESPONSE; }
+					if (WordComManager.getRule(ls[i - 1], ls[i]).equals(Word.QUESTION)
+							&& !Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION)) { return Word.RESPONSE; }
 				}
 			}
 		}
