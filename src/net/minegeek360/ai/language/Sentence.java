@@ -26,6 +26,25 @@ public class Sentence {
 		return null;
 	}
 
+	private static boolean isSentenceTypeQuestion(String sent) {
+		sent = LanguageInterpreter.removePunc(sent);
+		String[] temp = sent.split(" ");
+		for (int i = 0; i < temp.length; i++) {
+			if (temp[i].contains("why")) { return true; }
+			if (Dictionary.getWordTags(temp[i]) != null) {
+				if (Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION)) {
+					if (i == 0) { return true; }
+				} else if (Dictionary.getWordTags(temp[i]).containsKey(Word.QUESTION)
+						&& !Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION)) { return true; }
+
+			}
+			if (i >= 1) {
+				if (WordComManager.getRule(temp[i - 1], temp[i]).equals(Word.QUESTION)) { return true; }
+			}
+		}
+		return false;
+	}
+
 	public static String whatSentenceTypeIsThis(String sent) {
 		String[] temp = sent.split(" ");
 		ArrayList<String> temp2 = Dictionary.getAllWordsWithTag("GREETING");
@@ -35,7 +54,6 @@ public class Sentence {
 			}
 			if (((String) temp2.get(i)).equals(temp[0])) { return "GREETING"; }
 		}
-		temp2 = Dictionary.getAllWordsWithTag("QUESTION");
 		/*
 		 * if (temp.length > 1) { System.out.println("YES " + WordComManager.getRule(temp[0], temp[1])); if
 		 * (WordComManager.getRule(temp[0], temp[1]).equals("QUESTION")) { return "QUESTION"; } }
@@ -46,33 +64,11 @@ public class Sentence {
 
 		if (sent.startsWith("let me")) { return STATEMENT; }
 
-		for (int i = 0; i < temp.length; i++) {
-			if (Dictionary.getWordTags(temp[i]) != null) {
-				if (Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION) && i == 0) {
-					return Word.QUESTION;
-				} else if (Dictionary.getWordTags(temp[i]).containsKey(Word.QUESTION)
-						&& !Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION)) { return Word.QUESTION; }
-			}
-			if (i >= 1) {
-				if (WordComManager.getRule(temp[i - 1], temp[i]).equals(Word.QUESTION)) { return Word.QUESTION; }
-			}
-		}
+		if (isSentenceTypeQuestion(sent)) { return Word.QUESTION; }
 
 		if (Dictionary.getWordTags(temp[0]) != null && Dictionary.getWordTags(temp[0]).containsKey(Word.RESPONSE)) { return Word.RESPONSE; }
 		if (Output.getLastSaid().length() > 1) {
-			String[] ls = Output.getLastSaid().split(" ");
-			for (int i = 0; i < ls.length; i++) {
-				if (Dictionary.getWordTags(ls[i]) != null) {
-					if (Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION) && i == 0) {
-						return Word.QUESTION;
-					} else if (Dictionary.getWordTags(ls[i]).containsKey(Word.QUESTION)
-							&& !Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION)) { return Word.RESPONSE; }
-				}
-				if (i >= 1) {
-					if (WordComManager.getRule(ls[i - 1], ls[i]).equals(Word.QUESTION)
-							&& !Dictionary.getWordTags(temp[i]).containsKey(Word.YES_NO_QUESTION)) { return Word.RESPONSE; }
-				}
-			}
+			if (isSentenceTypeQuestion(Output.getLastSaid())) { return Word.RESPONSE; }
 		}
 		return "UNKNOWN";
 	}

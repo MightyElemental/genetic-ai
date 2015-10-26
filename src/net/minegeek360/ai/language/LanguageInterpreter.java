@@ -43,8 +43,25 @@ public class LanguageInterpreter {
 		if (yesNoQuestion(sent)) { return; }
 		if (explainQuestion(sent)) { return; }
 
-		Output.aiSay("let me answer that question with another question");
-		Output.aiSay("what are you talking about");
+		String[] temp = sent.split(" ");
+		String noun = "";
+		for (int i = 0; i < temp.length; i++) {
+			if (Dictionary.getWord(temp[i]) != null) {
+				if (i < temp.length - 1 && Dictionary.getWord(temp[i]).getTags().containsKey(Word.ARTICLE)) {
+					noun = temp[i + 1];
+					break;
+				}
+			}
+		}
+
+		if (chance(5)) {
+			Output.aiSay("let me answer that question with another question");
+			Output.aiSay("what are you talking about");
+		} else if (chance(50) && noun.length() > 1) {
+			Output.aiSay("what is ' " + noun + " '");
+		} else {
+			Output.aiSay("why should I help");
+		}
 	}
 
 	private static boolean explainQuestion(String sent) {
@@ -83,7 +100,7 @@ public class LanguageInterpreter {
 
 	private static boolean checkNames(String sent) {
 		if (sent.startsWith("what") && sent.contains("your name")) {
-			Output.aiSay("My name is " + GeneticAI.getName());
+			Output.aiSay("my name is " + GeneticAI.getName());
 			return true;
 		} else if (sent.startsWith("what") && sent.contains("my name")) {
 			ArrayList<String> temp = Dictionary.getAllWordsWithTag(Word.NAME);
@@ -122,12 +139,12 @@ public class LanguageInterpreter {
 			}
 		} else if (conversationList.size() - 1 >= 0 && Sentence.whatSentenceTypeIsThis(lastSaid).equals(Word.RESPONSE)) {
 			GeneticAI.setConfused(false);
-			if (chance(10)) {
-				Output.aiSay("Are you sure you meant to say '" + conversationList.get(conversationList.size() - 1) + "'");
+			if (chance(5)) {
+				Output.aiSay("are you sure you meant to say ' " + conversationList.get(conversationList.size() - 1) + " '");
+			} else if (chance(30)) {
+				Output.aiSay("what do you mean '" + conversationList.get(conversationList.size() - 1) + "'");
 			} else if (chance(20)) {
-				Output.aiSay("What do you mean '" + conversationList.get(conversationList.size() - 1) + "'");
-			} else if (chance(20)) {
-				Output.aiSay("By saying '" + conversationList.get(conversationList.size() - 1)
+				Output.aiSay("by saying '" + conversationList.get(conversationList.size() - 1)
 						+ "' do you really mean that you have no clue what I am on about");
 			} else {
 				Output.aiSay("Ok then");
@@ -140,7 +157,7 @@ public class LanguageInterpreter {
 		}
 	}
 
-	private static String removePunc(String string) {
+	public static String removePunc(String string) {
 		return string.replaceAll("[^a-z 1-9-]", "");
 	}
 

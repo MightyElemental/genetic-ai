@@ -17,7 +17,9 @@ public class Output {
 		lastSaid = message;
 		lastSaidTime = System.currentTimeMillis() / 1000L;
 		LanguageInterpreter.conversationList.add(message);
+		System.out.println(message);
 		message = processSentToAppeal(message, Sentence.whatSentenceTypeIsThis(message));
+		System.out.println(message);
 		if (!GeneticAI.hasGUI) {
 			String[] temp = message.split("");
 			System.out.print(GeneticAI.getName() + "> ");
