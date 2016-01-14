@@ -7,12 +7,18 @@ import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import com.skype.ChatMessage;
+import com.skype.ChatMessageListener;
+import com.skype.SkypeException;
+
 import net.minegeek360.ai.AIFrame;
 import net.minegeek360.ai.GeneticAI;
 
-public class Input implements KeyListener, ActionListener {
-	private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	private String overrideText = null;
+public class Input implements KeyListener, ActionListener, ChatMessageListener {
+
+	private BufferedReader	br				= new BufferedReader(new InputStreamReader(System.in));
+	private String			overrideText	= null;
 
 	public String getInputText() {
 		if (!GeneticAI.hasGUI) {
@@ -53,5 +59,17 @@ public class Input implements KeyListener, ActionListener {
 	}
 
 	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void chatMessageReceived(ChatMessage cm) throws SkypeException {
+		if (cm.getSender().getId().equals(GeneticAI.chat.getId())) {
+			overrideText = cm.getContent() + "";
+		}
+	}
+
+	@Override
+	public void chatMessageSent(ChatMessage cm) throws SkypeException {
+
 	}
 }

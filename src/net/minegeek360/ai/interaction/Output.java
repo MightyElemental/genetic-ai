@@ -2,6 +2,8 @@ package net.minegeek360.ai.interaction;
 
 import java.util.Map;
 
+import com.skype.SkypeException;
+
 import net.minegeek360.ai.AIFrame;
 import net.minegeek360.ai.GeneticAI;
 import net.minegeek360.ai.language.Dictionary;
@@ -36,6 +38,15 @@ public class Output {
 			System.out.println(GeneticAI.getName() + "> " + message);
 			AIFrame.addText(GeneticAI.getName() + "> " + message);
 		}
+		skypeChat("", message);
+	}
+
+	public static void skypeChat(String name, String message) {
+		try {
+			GeneticAI.chat.send(name + message);
+		} catch (SkypeException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void consoleSay(String message) {
@@ -56,6 +67,7 @@ public class Output {
 			AIFrame.addText("Console> " + message);
 			System.out.println("Console> " + message);
 		}
+		skypeChat("", message);
 	}
 
 	private static String processSentToAppeal(String sent, String sentType) {

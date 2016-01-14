@@ -1,5 +1,9 @@
 package net.minegeek360.ai;
 
+import com.skype.Chat;
+import com.skype.Skype;
+import com.skype.SkypeException;
+
 import net.minegeek360.ai.emotion.Emotion;
 import net.minegeek360.ai.interaction.Input;
 import net.minegeek360.ai.interaction.Output;
@@ -13,6 +17,8 @@ public class GeneticAI {
 	public static String[]	settings;
 	public static boolean	hasGUI	= true;
 	public static Input		input	= new Input();
+
+	public static Chat chat;
 
 	private void setupDictionary() {
 		for (int i = 0; i < Dictionary.presetGreetings.length; i++) {
@@ -48,16 +54,22 @@ public class GeneticAI {
 	}
 
 	public GeneticAI() {
+		try {
+			chat = Skype.chat("oj.ingham");
+			Skype.addChatMessageListener(input);
+		} catch (SkypeException e1) {
+			e1.printStackTrace();
+		}
 		handleSettings();
 		if (hasGUI) {
 			AIFrame.setup();
 		}
 		setupDictionary();
 
-		// Output.consoleSay("Hello there!");
-		Output.consoleSay("You are about to talk to a chat bot that learns from the users!");
+		Output.consoleSay("Hello there!");
+		// Output.consoleSay("You are about to talk to a chat bot that learns from the users!");
 		// Output.consoleSay("It has been named '" + name + "' by its master user");
-		Output.consoleSay("Type something in and It will try to respond correctly...");
+		// Output.consoleSay("Type something in and It will try to respond correctly...");
 		Output.newLine();
 		while (true) {
 			LanguageInterpreter.interperate(input.getInputText());
