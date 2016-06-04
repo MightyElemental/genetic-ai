@@ -63,7 +63,7 @@ public class Input implements KeyListener, ActionListener, ChatMessageListener {
 
 	@Override
 	public void chatMessageReceived(ChatMessage cm) throws SkypeException {
-		if (cm.getSender().getId().equals(GeneticAI.chat.getId())) {
+		if (cm.getChat() == GeneticAI.chat) {
 			overrideText = cm.getContent() + "";
 		}
 	}

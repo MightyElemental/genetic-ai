@@ -55,7 +55,7 @@ public class GeneticAI {
 
 	public GeneticAI() {
 		try {
-			chat = Skype.chat("oj.ingham");
+			chat = Skype.chat("jzouellette");
 			Skype.addChatMessageListener(input);
 		} catch (SkypeException e1) {
 			e1.printStackTrace();

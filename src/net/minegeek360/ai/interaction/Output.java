@@ -11,10 +11,11 @@ import net.minegeek360.ai.language.LanguageInterpreter;
 import net.minegeek360.ai.language.Sentence;
 
 public class Output {
-
-	private static String	lastSaid	= "";
-	private static long		lastSaidTime;
-
+	
+	
+	private static String lastSaid = "";
+	private static long lastSaidTime;
+	
 	public static void aiSay(String message) {
 		lastSaid = message;
 		lastSaidTime = System.currentTimeMillis() / 1000L;
@@ -40,7 +41,7 @@ public class Output {
 		}
 		skypeChat("", message);
 	}
-
+	
 	public static void skypeChat(String name, String message) {
 		try {
 			GeneticAI.chat.send(name + message);
@@ -48,9 +49,10 @@ public class Output {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public static void consoleSay(String message) {
 		message = processSentToAppeal(message, null);
+		if (message.length() <= 0) { return; }
 		if (!GeneticAI.hasGUI) {
 			String[] temp = message.split("");
 			System.out.print("Console> ");
@@ -69,7 +71,7 @@ public class Output {
 		}
 		skypeChat("", message);
 	}
-
+	
 	private static String processSentToAppeal(String sent, String sentType) {
 		String[] splitSent = sent.split(" ");
 		String temp3 = "";
@@ -92,6 +94,7 @@ public class Output {
 			System.out.println("ERROR! SOMETHING WENT WRONG");
 			e.printStackTrace();
 		}
+		if (sent.length() <= 0) { return ""; }
 		StringBuilder sb = new StringBuilder(sent);
 		String temp = sb.charAt(0) + "";
 		temp = temp.toUpperCase();
@@ -106,7 +109,7 @@ public class Output {
 		}
 		return sb.toString();
 	}
-
+	
 	public static void userSay(String message) {
 		if (GeneticAI.hasGUI) {
 			message = processSentToAppeal(message, Sentence.whatSentenceTypeIsThis(message));
@@ -114,16 +117,16 @@ public class Output {
 			System.out.println("User> " + message);
 		}
 	}
-
+	
 	public static void newLine() {
 		System.out.println("");
 		AIFrame.addText("\n");
 	}
-
+	
 	public static String getLastSaid() {
 		return lastSaid;
 	}
-
+	
 	public static long getLastSaidTime() {
 		return lastSaidTime;
 	}
