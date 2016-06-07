@@ -14,9 +14,10 @@ import net.minegeek360.ai.language.WordComManager;
 
 public class GeneticAI {
 
-	public static String[]	settings;
-	public static boolean	hasGUI	= true;
-	public static Input		input	= new Input();
+	public static String[] settings;
+	public static boolean hasGUI = true;
+	public static Input input = new Input();
+	public static boolean useSkype = false;
 
 	public static Chat chat;
 
@@ -32,12 +33,12 @@ public class GeneticAI {
 					.addTag(Word.YES_NO_QUESTION, Word.DEFINATE));
 		}
 		for (int i = 0; i < Dictionary.presetPropNouns.length; i++) {
-			Dictionary.addWord(
-					new Word(Dictionary.presetPropNouns[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE).addTag(Word.NOUN, Word.DEFINATE));
+			Dictionary.addWord(new Word(Dictionary.presetPropNouns[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE)
+					.addTag(Word.NOUN, Word.DEFINATE));
 		}
 		for (int i = 0; i < Dictionary.presetNames.length; i++) {
-			Dictionary.addWord(new Word(Dictionary.presetNames[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE).addTag(Word.NAME, Word.DEFINATE)
-					.addTag(Word.NOUN, Word.DEFINATE));
+			Dictionary.addWord(new Word(Dictionary.presetNames[i]).addTag(Word.PROPER_NOUN, Word.DEFINATE)
+					.addTag(Word.NAME, Word.DEFINATE).addTag(Word.NOUN, Word.DEFINATE));
 		}
 		for (String tempWord : Dictionary.presetArticles) {
 			Dictionary.addWord(new Word(tempWord).addTag(Word.ARTICLE, Word.DEFINATE));
@@ -54,22 +55,27 @@ public class GeneticAI {
 	}
 
 	public GeneticAI() {
-		try {
-			chat = Skype.chat("mrnullface");
-			Skype.addChatMessageListener(input);
-		} catch (SkypeException e1) {
-			e1.printStackTrace();
-		}
 		handleSettings();
+		if (useSkype) {
+			try {
+				chat = Skype.chat("mrnullface");
+				Skype.addChatMessageListener(input);
+			} catch (SkypeException e1) {
+				e1.printStackTrace();
+			}
+		}
 		if (hasGUI) {
 			AIFrame.setup();
 		}
 		setupDictionary();
 
 		Output.consoleSay("Hello there!");
-		// Output.consoleSay("You are about to talk to a chat bot that learns from the users!");
-		// Output.consoleSay("It has been named '" + name + "' by its master user");
-		// Output.consoleSay("Type something in and It will try to respond correctly...");
+		// Output.consoleSay("You are about to talk to a chat bot that learns
+		// from the users!");
+		// Output.consoleSay("It has been named '" + name + "' by its master
+		// user");
+		// Output.consoleSay("Type something in and It will try to respond
+		// correctly...");
 		Output.newLine();
 		while (true) {
 			LanguageInterpreter.interperate(input.getInputText());
@@ -102,17 +108,20 @@ public class GeneticAI {
 					if (settings[i].equals("-nogui")) {
 						hasGUI = false;
 					}
+					if (settings[i].equals("-useSkype")) {
+						useSkype = true;
+					}
 				}
 			}
 		} catch (Exception e) {
 		}
 	}
 
-	public int				overallKindness	= 5;
-	private Emotion			currentEmotion;
-	private static String	name			= "Gaiben";
-	private static boolean	isConfused		= false;
-	private static boolean	canBeConfused	= true;
+	public int overallKindness = 5;
+	private Emotion currentEmotion;
+	private static String name = "Gaiben";
+	private static boolean isConfused = false;
+	private static boolean canBeConfused = true;
 
 	public static void setName(String newName) {
 		name = newName;

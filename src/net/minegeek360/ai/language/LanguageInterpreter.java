@@ -6,14 +6,14 @@ import java.util.Random;
 
 import net.minegeek360.ai.GeneticAI;
 import net.minegeek360.ai.interaction.Output;
+import net.minegeek360.ai.language.response.QuestionExplain;
 
 public class LanguageInterpreter {
-	
-	
+
 	private static Random rand = new Random();
-	
+
 	public static List<String> conversationList = new ArrayList<String>();
-	
+
 	public static int getPositionOfTextInList(String sent) {
 		for (int i = conversationList.size() - 1; i > 0; i--) {
 			String tempSent = conversationList.get(i);
@@ -24,7 +24,7 @@ public class LanguageInterpreter {
 		}
 		return 0;
 	}
-	
+
 	private static void greet(String sent) {
 		ArrayList<String> temp2 = Dictionary.getAllWordsWithTag(Word.GREETING);
 		if (sent.contains("hello") && chance(70)) {
@@ -34,17 +34,24 @@ public class LanguageInterpreter {
 			Output.aiSay((String) temp2.get(rand.nextInt(temp2.size())));
 		}
 	}
-	
+
 	private static boolean chance(int percentage) {
 		int temp = rand.nextInt(99);
 		return temp < percentage;
 	}
-	
+
 	private static void answerQuestion(String sent) {
-		if (checkNames(sent)) { return; }
-		if (yesNoQuestion(sent)) { return; }
-		if (explainQuestion(sent)) { return; }
-		
+		if (checkNames(sent)) {
+			return;
+		}
+		if (yesNoQuestion(sent)) {
+			return;
+		}
+		if (Sentence.whatSentenceTypeIsThis(sent).equals(Word.EXPLAIN_QUESTION)) {
+			QuestionExplain.answerQuestion(sent, splitIntoWords(sent));
+			return;
+		}
+
 		String[] temp = sent.split(" ");
 		String noun = "";
 		for (int i = 0; i < temp.length; i++) {
@@ -55,7 +62,7 @@ public class LanguageInterpreter {
 				}
 			}
 		}
-		
+
 		if (chance(5)) {
 			Output.aiSay("let me answer that question with another question");
 			Output.aiSay("what are you talking about");
@@ -65,13 +72,14 @@ public class LanguageInterpreter {
 			Output.aiSay("why should I help");
 		}
 	}
-	
+
 	private static boolean explainQuestion(String sent) {
 		String[] temp = sent.split(" ");
 		if (Dictionary.getWordTags(temp[0]).containsKey(Word.EXPLAIN_QUESTION)
-			|| Sentence.whatSentenceTypeIsThis(sent).equals(Word.EXPLAIN_QUESTION)) {
+				|| Sentence.whatSentenceTypeIsThis(sent).equals(Word.EXPLAIN_QUESTION)) {
 			if (temp.length > 1 && temp[1].equals("not")) {
-				// Output.aiSay("because i am unsure about anything and everything");
+				// Output.aiSay("because i am unsure about anything and
+				// everything");
 				Output.aiSay("because reasons");
 				return true;
 			} else {
@@ -81,13 +89,13 @@ public class LanguageInterpreter {
 		}
 		return false;
 	}
-	
+
 	private static final int positivePercentage = 40;
-	
+
 	private static boolean yesNoQuestion(String sent) {
 		String[] temp = { "yes", "no" };
 		if (Dictionary.getWordTags(sent.split(" ")[0]).containsKey(Word.YES_NO_QUESTION)
-			|| Sentence.whatSentenceTypeIsThis(sent).equals(Word.YES_NO_QUESTION)) {
+				|| Sentence.whatSentenceTypeIsThis(sent).equals(Word.YES_NO_QUESTION)) {
 			if (chance(positivePercentage)) {
 				// Output.aiSay(temp[0]+" | "+temp2+"%");
 				Output.aiSay(temp[0]);
@@ -99,10 +107,14 @@ public class LanguageInterpreter {
 		}
 		return false;
 	}
-	
+
 	private static boolean checkNames(String sent) {
 		if (sent.startsWith("what") && sent.contains("your name")) {
-			Output.aiSay("my name is " + GeneticAI.getName());
+			if (Sentence.isNegative(sent)) {
+				Output.aiSay("well, my name is not jeff");
+			} else {
+				Output.aiSay("my name is " + GeneticAI.getName());
+			}
 			return true;
 		} else if (sent.startsWith("what") && sent.contains("my name")) {
 			ArrayList<String> temp = Dictionary.getAllWordsWithTag(Word.NAME);
@@ -115,7 +127,7 @@ public class LanguageInterpreter {
 		}
 		return false;
 	}
-	
+
 	public static void respond(String lastSaid, String sentType) {
 		if (sentType.equals(Word.GREETING)) {
 			greet(lastSaid);
@@ -139,15 +151,17 @@ public class LanguageInterpreter {
 			for (String noun : Dictionary.getAllWordsWithTag(Word.NOUN)) {
 				Output.consoleSay(noun);
 			}
-		} else if (conversationList.size() - 1 >= 0 && Sentence.whatSentenceTypeIsThis(lastSaid).equals(Word.RESPONSE)) {
+		} else if (conversationList.size() - 1 >= 0
+				&& Sentence.whatSentenceTypeIsThis(lastSaid).equals(Word.RESPONSE)) {
 			GeneticAI.setConfused(false);
 			if (chance(5)) {
-				Output.aiSay("are you sure you meant to say ' " + conversationList.get(conversationList.size() - 1) + " '");
+				Output.aiSay(
+						"are you sure you meant to say ' " + conversationList.get(conversationList.size() - 1) + " '");
 			} else if (chance(30)) {
 				Output.aiSay("what do you mean '" + conversationList.get(conversationList.size() - 1) + "'");
 			} else if (chance(20)) {
 				Output.aiSay("by saying '" + conversationList.get(conversationList.size() - 1)
-					+ "' do you really mean that you have no clue what I am on about");
+						+ "' do you really mean that you have no clue what I am on about");
 			} else {
 				Output.aiSay("Ok then");
 			}
@@ -158,13 +172,15 @@ public class LanguageInterpreter {
 			Output.aiSay("what");
 		}
 	}
-	
+
 	public static String removePunc(String string) {
-		return string.replaceAll("[^a-z 1-9-]", "");
+		return string.replaceAll("[^a-z 0-9-']", "");
 	}
-	
+
 	public static void interperate(String string) {
-		if (string == null) { return; }
+		if (string == null) {
+			return;
+		}
 		string = string.toLowerCase();
 		string = removePunc(string);
 		conversationList.add(string);
@@ -182,13 +198,12 @@ public class LanguageInterpreter {
 			}
 		}
 		respond(string, Sentence.whatSentenceTypeIsThis(string));
-		System.out.println("Is neg "+Sentence.isNegative(string));
 	}
-	
+
 	/** Use to separate a sentence into individual words */
 	public static ArrayList<String> splitIntoWords(String sent) {
 		ArrayList<String> words = new ArrayList<String>();
-		
+
 		StringBuilder sb = new StringBuilder(sent);
 		while (sb.toString().startsWith(" ")) {
 			sb.deleteCharAt(0);
@@ -197,7 +212,7 @@ public class LanguageInterpreter {
 			sb.deleteCharAt(sb.length() - 1);
 		}
 		sent = sb.toString();
-		
+
 		for (String word : sent.split(" ")) {
 			words.add(word);
 		}
